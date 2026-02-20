@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="32x32" href="https://img.icons8.com/?size=32&id=OFHwDWASQWmX&format=png&color=000000">
+<link rel="icon" type="image/png" sizes="16x16" href="https://img.icons8.com/?size=16&id=OFHwDWASQWmX&format=png&color=000000">
+<title>LEE Coin Dashboard</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#000000,#1a0000);
+    color:white;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.dashboard{
+    width:95%;
+    max-width:1100px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.header h1{
+    font-weight:800;
+    background:linear-gradient(90deg,#ff3c00,#ff7b00);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.back-btn{
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:8px;
+    background:linear-gradient(135deg,#ff3c00,#ff7b00);
+    color:white;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.back-btn:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(255,60,0,0.6);
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:rgba(255,255,255,0.05);
+    border-radius:20px;
+    padding:25px;
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,60,0,0.3);
+    transition:0.4s;
+    transform-style:preserve-3d;
+}
+
+.card:hover{
+    transform:rotateX(8deg) rotateY(-8deg) scale(1.05);
+    box-shadow:0 25px 40px rgba(255,60,0,0.4);
+}
+
+.balance h2{
+    font-weight:600;
+    margin-bottom:10px;
+    color:#ff7b00;
+}
+
+.balance .amount{
+    font-size:2.5rem;
+    font-weight:800;
+}
+
+.user{
+    margin-top:15px;
+    font-size:0.9rem;
+    opacity:0.8;
+}
+
+.graph-card h2{
+    margin-bottom:15px;
+    color:#ff7b00;
+}
+
+canvas{
+    width:100%!important;
+    height:250px!important;
+}
+
+.footer{
+    margin-top:30px;
+    text-align:center;
+    opacity:0.5;
+    font-size:0.8rem;
+}
+</style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <div class="header">
+        <h1>LEE Coin Members Dashboard</h1>
+        <a href="https://tycoon-x32.github.io/LEE.co/" class="back-btn">Back to Main Page</a>
+    </div>
+
+    <div class="cards">
+
+        <div class="card balance">
+            <h2>Wallet Balance</h2>
+            <div class="amount">1 LEE COIN</div>
+            <div class="user">Holder: Judah Munene</div>
+            <div class="user">Owner Holds: 1 LEE COIN</div>
+        </div>
+
+        <div class="card graph-card">
+            <h2>Market Growth</h2>
+            <canvas id="priceChart"></canvas>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        LEE COIN • Premium Member Access
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('priceChart').getContext('2d');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Launch', 'Stage 1', 'Stage 2', 'Stage 3', 'Today'],
+        datasets: [{
+            label: 'LEE Coin Price ($)',
+            data: [0.6, 0.7, 0.8, 0.9, 1.0],
+            borderColor: '#ff3c00',
+            backgroundColor: 'rgba(255,60,0,0.2)',
+            tension: 0.4,
+            fill: true,
+            pointBackgroundColor:'#ff7b00',
+            pointRadius:5
+        }]
+    },
+    options: {
+        plugins:{
+            legend:{labels:{color:'white'}}
+        },
+        scales: {
+            x: {
+                ticks:{color:'white'}
+            },
+            y: {
+                ticks:{color:'white'},
+                beginAtZero:false
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
