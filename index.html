@@ -154,10 +154,10 @@ const ctx = document.getElementById('priceChart').getContext('2d');
 new Chart(ctx, {
     type: 'line',
     data: {
-        labels: ['Launch', 'Stage 1', 'Stage 2', 'Stage 3', 'Today'],
+        labels: ['Launch', 'Stage 1', 'Stage 2', 'Stage 3', 'Stage 4', 'Today'],
         datasets: [{
             label: 'LEE Coin Price ($)',
-            data: [0.6, 0.7, 0.8, 0.9, 1.0],
+            data: [0.6, 0.7, 0.8, 0.9, 1.0, 2.0, 3.0],
             borderColor: '#ff3c00',
             backgroundColor: 'rgba(255,60,0,0.2)',
             tension: 0.4,
@@ -186,3 +186,4 @@ new Chart(ctx, {
 </body>
 
 </html>
+
