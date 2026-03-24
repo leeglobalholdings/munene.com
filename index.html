@@ -103,6 +103,33 @@ body{
     color:#ff7b00;
 }
 
+.timeframe-buttons{
+    display:flex;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+.timeframe-buttons button{
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.25);
+    color:white;
+    padding:6px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:0.85rem;
+    transition:background 0.2s, transform 0.2s;
+}
+
+.timeframe-buttons button:hover{
+    background:rgba(255,255,255,0.18);
+    transform:translateY(-1px);
+}
+
+.timeframe-buttons button.active{
+    background:rgba(255,123,0,0.9);
+    border-color:rgba(255,123,0,0.9);
+}
+
 canvas{
     width:100%!important;
     height:250px!important;
@@ -129,13 +156,20 @@ canvas{
 
         <div class="card balance">
             <h2>Wallet Balance</h2>
-            <div class="amount">2 LEE COIN</div>
+            <div class="amount">3 LEE COIN ($30)</div>
+            <div class="user">1 LEE COIN = $10</div>
             <div class="user">Holder: Judah Munene</div>
-            <div class="user">Owner Holds: 2 LEE COIN</div>
+            <div class="user">Owner Holds: 3 LEE COIN</div>
         </div>
 
         <div class="card graph-card">
             <h2>Market Growth</h2>
+            <div class="timeframe-buttons">
+                <button data-tf="1m" class="active">1m</button>
+                <button data-tf="4h">4h</button>
+                <button data-tf="1d">1d</button>
+                <button data-tf="1M">1M</button>
+            </div>
             <canvas id="priceChart"></canvas>
         </div>
 
@@ -148,42 +182,138 @@ canvas{
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@0.2.0/dist/chartjs-chart-financial.min.js"></script>
 <script>
-const ctx = document.getElementById('priceChart').getContext('2d');
+const COIN_PRICE = 10;
+const HOLDINGS = 3;
 
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Launch', 'Stage 1', 'Stage 2', 'Stage 3', 'Stage 4', 'Today'],
-        datasets: [{
-            label: 'LEE Coin Price ($)',
-            data: [0.6, 0.7, 0.8, 0.9, 1.0, 2.0, 3.0],
-            borderColor: '#ff3c00',
-            backgroundColor: 'rgba(255,60,0,0.2)',
-            tension: 0.4,
-            fill: true,
-            pointBackgroundColor:'#ff7b00',
-            pointRadius:5
-        }]
-    },
-    options: {
-        plugins:{
-            legend:{labels:{color:'white'}}
+const balanceAmountEl = document.querySelector('.balance .amount');
+if (balanceAmountEl) {
+    balanceAmountEl.textContent = `${HOLDINGS} LEE COIN (~$${(HOLDINGS * COIN_PRICE).toFixed(2)})`;
+}
+
+function generateCandleData(basePrice, points, intervalMinutes, volatility = 0.02) {
+    const data = [];
+    let lastClose = basePrice;
+    const now = Date.now();
+
+    for (let i = points - 1; i >= 0; i--) {
+        const time = now - i * intervalMinutes * 60_000;
+        const open = lastClose;
+        const change = (Math.random() * 2 - 1) * volatility * basePrice;
+        const close = Math.max(0.01, open + change);
+        const high = Math.max(open, close) + Math.random() * volatility * basePrice;
+        const low = Math.min(open, close) - Math.random() * volatility * basePrice;
+
+        data.push({
+            x: time,
+            o: open,
+            h: high,
+            l: Math.max(0.01, low),
+            c: close
+        });
+
+        lastClose = close;
+    }
+
+    return data;
+}
+
+const timeframes = {
+    '1m': { label: '1m', points: 60, intervalMinutes: 1, unit: 'minute' },
+    '4h': { label: '4h', points: 48, intervalMinutes: 5, unit: 'hour' },
+    '1d': { label: '1d', points: 24, intervalMinutes: 60, unit: 'hour' },
+    '1M': { label: '1M', points: 30, intervalMinutes: 60 * 24, unit: 'day' }
+};
+
+const ctx = document.getElementById('priceChart').getContext('2d');
+let priceChart;
+
+function createChart(data, timeframeKey) {
+    const timeConfig = timeframes[timeframeKey] || timeframes['1m'];
+
+    return new Chart(ctx, {
+        type: 'candlestick',
+        data: {
+            datasets: [{
+                label: `LEE Coin ($${COIN_PRICE})`,
+                data,
+                color: {
+                    up: 'rgba(0,200,0,0.65)',
+                    down: 'rgba(255,80,80,0.65)',
+                    unchanged: 'rgba(200,200,200,0.65)'
+                },
+                borderColor: {
+                    up: 'rgba(0,200,0,0.9)',
+                    down: 'rgba(255,80,80,0.9)',
+                    unchanged: 'rgba(200,200,200,0.9)'
+                },
+                borderWidth: 1,
+                barPercentage: 0.6,
+                categoryPercentage: 0.75
+            }]
         },
-        scales: {
-            x: {
-                ticks:{color:'white'}
+        options: {
+            plugins: {
+                legend: { labels: { color: 'white' } },
+                tooltip: {
+                    callbacks: {
+                        label(ctx) {
+                            const p = ctx.parsed;
+                            return `O:${p.o.toFixed(2)} H:${p.h.toFixed(2)} L:${p.l.toFixed(2)} C:${p.c.toFixed(2)}`;
+                        }
+                    }
+                }
             },
-            y: {
-                ticks:{color:'white'},
-                beginAtZero:false
+            scales: {
+                x: {
+                    type: 'timeseries',
+                    time: {
+                        unit: timeConfig.unit,
+                        tooltipFormat: 'MMM d, HH:mm'
+                    },
+                    ticks: { color: 'white' },
+                    grid: { color: 'rgba(255,255,255,0.1)' }
+                },
+                y: {
+                    ticks: { color: 'white' },
+                    grid: { color: 'rgba(255,255,255,0.1)' },
+                    beginAtZero: false
+                }
             }
         }
+    });
+}
+
+function updateChart(timeframeKey) {
+    const cfg = timeframes[timeframeKey] || timeframes['1m'];
+    const data = generateCandleData(COIN_PRICE, cfg.points, cfg.intervalMinutes, 0.02);
+
+    if (priceChart) {
+        priceChart.data.datasets[0].data = data;
+        priceChart.options.scales.x.time.unit = cfg.unit;
+        priceChart.update();
+        return;
     }
+
+    priceChart = createChart(data, timeframeKey);
+}
+
+document.querySelectorAll('.timeframe-buttons button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.timeframe-buttons button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        updateChart(btn.dataset.tf);
+    });
 });
+
+updateChart('1m');
 </script>
 
 </body>
 
 </html>
+
+
 
