@@ -1,145 +1,108 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" sizes="32x32" href="https://img.icons8.com/?size=32&id=OFHwDWASQWmX&format=png&color=000000">
-<link rel="icon" type="image/png" sizes="16x16" href="https://img.icons8.com/?size=16&id=OFHwDWASQWmX&format=png&color=000000">
-<title>LEE Coin Dashboard</title>
+
+<link rel="icon" type="image/png" sizes="32x32"
+href="https://img.icons8.com/?size=32&id=OFHwDWASQWmX&format=png&color=000000">
+
+<title>LEE Coin | Members Dashboard</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+:root{--orange:#ff3c00;--gold:#ff7b00;--bg:#080808;--muted:#aaa}
 body{
-    background:linear-gradient(135deg,#000000,#1a0000);
-    color:white;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    background:linear-gradient(135deg,#000,#1a0000);
+    color:white;min-height:100vh;padding:35px 0;
 }
-
-.dashboard{
-    width:95%;
-    max-width:1100px;
-}
-
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:30px;
-}
-
+.dashboard{width:95%;max-width:1100px;margin:auto}
+.header{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px;flex-wrap:wrap}
 .header h1{
-    font-weight:800;
-    background:linear-gradient(90deg,#ff3c00,#ff7b00);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+    font-weight:800;background:linear-gradient(90deg,var(--orange),var(--gold));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
 }
-
-.back-btn{
-    text-decoration:none;
-    padding:10px 18px;
-    border-radius:8px;
-    background:linear-gradient(135deg,#ff3c00,#ff7b00);
-    color:white;
-    font-weight:600;
-    transition:0.3s;
+.back-btn,.action-btn{
+    display:inline-block;text-decoration:none;padding:11px 17px;border:0;
+    border-radius:8px;background:linear-gradient(135deg,var(--orange),var(--gold));
+    color:white;font-weight:600;cursor:pointer;font-size:13px;transition:.3s;
 }
-
-.back-btn:hover{
-    transform:translateY(-4px);
-    box-shadow:0 10px 25px rgba(255,60,0,0.6);
+.back-btn:hover,.action-btn:hover{transform:translateY(-3px);box-shadow:0 10px 25px #ff3c0050}
+.nav{
+    display:flex;gap:10px;flex-wrap:wrap;margin-bottom:25px;
 }
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:25px;
+.nav button{
+    background:#ffffff0c;color:#ddd;border:1px solid #ffffff24;
+    border-radius:9px;padding:11px 15px;cursor:pointer;
 }
-
+.nav button.active{background:var(--orange);color:white;border-color:var(--orange)}
+.page{display:none}
+.page.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
 .card{
-    background:rgba(255,255,255,0.05);
-    border-radius:20px;
-    padding:25px;
-    backdrop-filter:blur(15px);
-    border:1px solid rgba(255,60,0,0.3);
-    transition:0.4s;
-    transform-style:preserve-3d;
+    background:#ffffff0c;border-radius:18px;padding:25px;
+    backdrop-filter:blur(15px);border:1px solid #ff3c004c;
+    transition:.3s;min-width:0;
 }
-
-.card:hover{
-    transform:rotateX(8deg) rotateY(-8deg) scale(1.05);
-    box-shadow:0 25px 40px rgba(255,60,0,0.4);
+.card:hover{box-shadow:0 15px 35px #ff3c0020}
+.balance h2,.card h2{margin-bottom:14px;color:var(--gold);font-size:19px}
+.amount{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;overflow-wrap:anywhere}
+.user{margin-top:12px;font-size:.85rem;color:#ddd}
+.muted{color:var(--muted);font-size:12px;line-height:1.8}
+.section-title{margin:25px 0 15px;font-size:20px}
+label{display:block;font-size:12px;color:#ddd;margin:15px 0 7px}
+input,select,textarea{
+    width:100%;padding:12px;background:#101010;color:white;
+    border:1px solid #ffffff2b;border-radius:8px;outline:none;
 }
-
-.balance h2{
-    font-weight:600;
-    margin-bottom:10px;
-    color:#ff7b00;
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:80px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.full{grid-column:1/-1}
+.notice{
+    background:#ff7b0010;border:1px solid #ff7b0050;border-radius:10px;
+    padding:15px;margin:17px 0;color:#f1d5b7;font-size:12px;line-height:1.8;
 }
-
-.balance .amount{
-    font-size:2.5rem;
-    font-weight:800;
+.summary-row{display:flex;justify-content:space-between;gap:15px;padding:12px 0;border-bottom:1px solid #ffffff15;font-size:13px}
+.summary-row strong{text-align:right}
+.orange{color:var(--gold)}
+.status{
+    display:inline-block;padding:7px 11px;border-radius:30px;
+    background:#ff7b001c;color:#ffb15d;font-size:11px;
 }
-
-.user{
-    margin-top:15px;
-    font-size:0.9rem;
-    opacity:0.8;
+.timeline{margin-top:24px}
+.timeline-item{display:flex;gap:15px;padding-bottom:24px}
+.timeline-dot{height:13px;width:13px;flex-shrink:0;border:2px solid var(--gold);border-radius:50%;margin-top:5px}
+.timeline-item h3{font-size:14px;margin-bottom:5px}
+.timeline-item p{font-size:12px;color:var(--muted);line-height:1.8}
+.countdown{
+    font-size:clamp(2rem,7vw,3.7rem);font-weight:800;
+    color:var(--gold);margin:20px 0;overflow-wrap:anywhere;
 }
-
-.graph-card h2{
-    margin-bottom:15px;
-    color:#ff7b00;
-}
-
-.timeframe-buttons{
-    display:flex;
-    gap:10px;
-    margin-bottom:12px;
-}
-
-.timeframe-buttons button{
-    background:rgba(255,255,255,0.12);
-    border:1px solid rgba(255,255,255,0.25);
-    color:white;
-    padding:6px 12px;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:0.85rem;
-    transition:background 0.2s, transform 0.2s;
-}
-
-.timeframe-buttons button:hover{
-    background:rgba(255,255,255,0.18);
-    transform:translateY(-1px);
-}
-
-.timeframe-buttons button.active{
-    background:rgba(255,123,0,0.9);
-    border-color:rgba(255,123,0,0.9);
-}
-
-canvas{
-    width:100%!important;
-    height:250px!important;
-}
-
-.footer{
-    margin-top:30px;
-    text-align:center;
-    opacity:0.5;
-    font-size:0.8rem;
+.time-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+.time-box{background:#ffffff0a;border:1px solid #ffffff17;border-radius:10px;text-align:center;padding:16px 5px}
+.time-box strong{display:block;font-size:25px;color:var(--gold)}
+.time-box span{font-size:10px;color:#aaa}
+.progress{height:7px;background:#ffffff18;border-radius:10px;overflow:hidden;margin:15px 0}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--gold));transition:width .3s}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:left;padding:13px 9px;border-bottom:1px solid #ffffff17}
+th{color:#aaa;font-weight:400}
+.table-wrap{overflow-x:auto}
+.footer{text-align:center;margin-top:35px;color:#999;font-size:11px;line-height:1.9}
+#feedback{margin-top:15px;color:#ffbd7c;font-size:12px;line-height:1.8}
+button:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:600px){
+    body{padding:22px 0}
+    .header h1{font-size:23px}
+    .form-grid{grid-template-columns:1fr}
+    .full{grid-column:auto}
+    .card{padding:19px}
+    .time-grid{gap:5px}
+    .time-box strong{font-size:20px}
 }
 </style>
 </head>
@@ -147,173 +110,341 @@ canvas{
 
 <div class="dashboard">
 
-    <div class="header">
-        <h1>LEE Coin Members Dashboard</h1>
-        <a href="https://tycoon-x32.github.io/LEE.co/" class="back-btn">Back to Main Page</a>
-    </div>
+    <header class="header">
+        <h1>LEE Coin Dashboard</h1>
+        <a href="https://tycoon-x32.github.io/LEE.co/" class="back-btn">Main Website ↗</a>
+    </header>
 
-    <div class="cards">
+    <nav class="nav">
+        <button class="active" data-page="overview">Dashboard</button>
+        <button data-page="withdrawal">Withdrawal Enquiry</button>
+        <button data-page="tracking">90-Day Timeline</button>
+    </nav>
 
-        <div class="card balance">
-            <h2>Wallet Balance</h2>
-            <div class="amount">12 LEE COIN ($120)</div>
-            <div class="user">1 LEE COIN = $10</div>
-            <div class="user">Holder: Judah Munene</div>
-            <div class="user">Owner Holds: 12 LEE COIN</div>
-        </div>
-
-        <div class="card graph-card">
-            <h2>Market Growth</h2>
-            <div class="timeframe-buttons">
-                <button data-tf="1m" class="active">1m</button>
-                <button data-tf="4h">4h</button>
-                <button data-tf="1d">1d</button>
-                <button data-tf="1M">1M</button>
+    <!-- DASHBOARD -->
+    <section id="overview" class="page active">
+        <div class="cards">
+            <div class="card balance">
+                <h2>Wallet Balance</h2>
+                <div class="amount">12 LEE COIN ($120.00)</div>
+                <p class="user">1 LEE COIN = $10.00 (configured rate)</p>
+                <p class="user">Holder: Judah Munene</p>
+                <p class="user">Recorded holdings: 12 LEE COIN</p>
             </div>
-            <canvas id="priceChart"></canvas>
+
+            <div class="card">
+                <h2>Withdrawal Summary</h2>
+                <div class="summary-row"><span>Request status</span><strong id="overviewStatus">No request</strong></div>
+                <div class="summary-row"><span>Requested amount</span><strong id="overviewAmount">$0.00</strong></div>
+                <div class="summary-row"><span>Service fee</span><strong>$20.00 if applicable</strong></div>
+                <div class="summary-row"><span>Timeline</span><strong id="overviewDate">Not started</strong></div>
+                <br>
+                <button class="action-btn" onclick="showPage('withdrawal')">Start Enquiry →</button>
+            </div>
         </div>
 
-    </div>
+        <h2 class="section-title">Market Growth</h2>
+        <div class="card">
+            <div class="timeframe-buttons" style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px">
+                <button class="tf active" data-tf="1m">1m</button>
+                <button class="tf" data-tf="4h">4h</button>
+                <button class="tf" data-tf="1d">1d</button>
+                <button class="tf" data-tf="1M">1M</button>
+            </div>
+            <canvas id="priceChart" style="width:100%;max-height:250px"></canvas>
+        
+        </div>
+    </section>
+
+    <!-- WITHDRAWAL FORM -->
+    <section id="withdrawal" class="page">
+        <div class="card">
+            <h2>Withdrawal Enquiry</h2>
+            <p class="muted">Complete the form to record your request for review.</p>
+
+            <div class="notice">
+                <strong>Exchange-processing fee: $20.00</strong><br>
+                This is a proposed service fee charged separately for exchange-processing assistance.
+            </div>
+
+            <form id="withdrawalForm">
+                <div class="form-grid">
+                    <div>
+                        <label for="clientName">Full name</label>
+                        <input id="clientName" value="Judah Munene" required maxlength="100">
+                    </div>
+                    <div>
+                        <label for="clientEmail">Email address</label>
+                        <input id="clientEmail" type="email" placeholder="client@example.com" required>
+                    </div>
+                    <div>
+                        <label for="clientPhone">Contact number</label>
+                        <input id="clientPhone" type="tel" placeholder="+254..." required>
+                    </div>
+                    <div>
+                        <label for="reference">Third-party account reference</label>
+                        <input id="reference" placeholder="Non-sensitive reference only" maxlength="100">
+                    </div>
+                    <div>
+                        <label for="withdrawAmount">Requested amount (USD)</label>
+                        <input id="withdrawAmount" type="number" min="0.01" max="120" step="0.01" value="120" required>
+                    </div>
+                    <div>
+                        <label for="payoutCurrency">Requested payout currency</label>
+                        <select id="payoutCurrency">
+                            <option value="USD">USD — US Dollar</option>
+                            <option value="KES">KES — Kenyan Shilling</option>
+                        </select>
+                    </div>
+                    <div class="full">
+                        <label for="payoutMethod">Preferred payout method</label>
+                        <select id="payoutMethod" required>
+                            <option value="">Select a method</option>
+                            <option>Bank transfer</option>
+                            <option>M-Pesa</option>
+                            <option>Third-party platform withdrawal</option>
+                            <option>Other — discuss with administrator</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top:20px;background:#0005">
+                    <h2>Estimated Fee Breakdown</h2>
+                    <div class="summary-row"><span>Requested amount</span><strong id="summaryAmount">$120.00</strong></div>
+                    <div class="summary-row"><span>Exchange-processing service fee</span><strong id="summaryFee">$20.00</strong></div>
+                    <div class="summary-row"><span>Estimated remainder before other charges</span><strong id="summaryNet">$100.00</strong></div>
+                    <div class="summary-row"><span>Additional taxes / provider charges</span><strong>Not yet determined</strong></div>
+                    <p class="muted" style="margin-top:12px">The estimate assumes the $20 fee is deducted from the requested amount. If it is paid separately, the payout calculation will differ. Any conversion into KES requires a confirmed rate and disclosure of the source.</p>
+                </div>
+
+                <label style="display:flex;gap:10px;align-items:flex-start;line-height:1.8;margin-top:22px">
+                    <input id="feeConsent" type="checkbox" style="width:auto;margin-top:5px;flex-shrink:0" required>
+                    <span>I have reviewed the proposed $20 service fee and understand that this is an enquiry, not a confirmed transaction. I understand that the fee must be agreed and the applicable terms verified before processing.</span>
+                </label>
+
+                <label style="display:flex;gap:10px;align-items:flex-start;line-height:1.8">
+                    <input id="timelineConsent" type="checkbox" style="width:auto;margin-top:5px;flex-shrink:0" required>
+                    <span>I understand that a 90-day period is not automatically required by law. Any applicable waiting period must have a valid legal or contractual basis, and its start date must be confirmed.</span>
+                </label>
+
+                <div class="actions" style="margin-top:22px">
+                    <button type="submit" class="action-btn">Submit Enquiry</button>
+                    <button type="button" class="back-btn" onclick="showPage('overview')">Cancel</button>
+                </div>
+                <p id="feedback" role="status"></p>
+            </form>
+        </div>
+    </section>
+
+    <!-- COUNTDOWN / TRACKING -->
+    <section id="tracking" class="page">
+        <div class="card">
+            <h2>Withdrawal Timeline</h2>
+            <p class="muted">Client: Judah Munene</p>
+            <br>
+            <span class="status" id="trackingStatus">No request submitted</span>
+
+            <div class="notice">
+                This countdown is a planning display, not a legal notice or proof that funds are being held. It must not start until an authorized administrator verifies the request, confirms the applicable terms, and records the actual effective date. No funds are transferred or restricted by this page.
+            </div>
+
+            <p class="label" style="margin-top:25px">Illustrative time remaining</p>
+            <div class="countdown" id="countdown">Not started</div>
+
+            <div class="time-grid">
+                <div class="time-box"><strong id="days">—</strong><span>DAYS</span></div>
+                <div class="time-box"><strong id="hours">—</strong><span>HOURS</span></div>
+                <div class="time-box"><strong id="minutes">—</strong><span>MINUTES</span></div>
+                <div class="time-box"><strong id="seconds">—</strong><span>SECONDS</span></div>
+            </div>
+
+            <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+            <div class="summary-row"><span>Request received</span><strong id="requestDate">Not submitted</strong></div>
+            <div class="summary-row"><span>Confirmed processing start</span><strong id="startDate">Awaiting verification</strong></div>
+            <div class="summary-row"><span>Projected review date</span><strong id="releaseDate">Not confirmed</strong></div>
+            <div class="summary-row"><span>Requested amount</span><strong id="trackingAmount">$0.00</strong></div>
+            <div class="summary-row"><span>Service fee</span><strong>$20.00 proposed</strong></div>
+
+            <p class="muted" style="margin-top:20px"></p>
+            <div class="actions">
+                <button class="action-btn" onclick="showPage('withdrawal')">New Enquiry</button>
+                <button class="back-btn" onclick="showPage('overview')">Dashboard</button>
+            </div>
+        </div>
+    </section>
 
     <div class="footer">
-        LEE COIN • Premium Member Access
+        <strong>LEE COIN • LEE GLOBAL HOLDINGS</strong><br>
+        Client portal .<br>
+        Balances,requests, and dates require independent verification.
     </div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@0.2.0/dist/chartjs-chart-financial.min.js"></script>
 <script>
-const COIN_PRICE = 10;
-const HOLDINGS = 12;
+/* NAVIGATION */
+function showPage(pageId){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
 
-const balanceAmountEl = document.querySelector('.balance .amount');
-if (balanceAmountEl) {
-    balanceAmountEl.textContent = `${HOLDINGS} LEE COIN (~$${(HOLDINGS * COIN_PRICE).toFixed(2)})`;
+    const page=document.getElementById(pageId);
+    if(page) page.classList.add('active');
+
+    const nav=document.querySelector(`.nav button[data-page="${pageId}"]`);
+    if(nav) nav.classList.add('active');
+
+    window.scrollTo({top:0,behavior:'smooth'});
 }
+document.querySelectorAll('.nav button').forEach(btn=>{
+    btn.addEventListener('click',()=>showPage(btn.dataset.page));
+});
 
-function generateCandleData(basePrice, points, intervalMinutes, volatility = 0.02) {
-    const data = [];
-    let lastClose = basePrice;
-    const now = Date.now();
+/* FEE CALCULATOR */
+const BALANCE=120;
+const PROCESSING_FEE=20;
+const amountInput=document.getElementById('withdrawAmount');
 
-    for (let i = points - 1; i >= 0; i--) {
-        const time = now - i * intervalMinutes * 60_000;
-        const open = lastClose;
-        const change = (Math.random() * 2 - 1) * volatility * basePrice;
-        const close = Math.max(0.01, open + change);
-        const high = Math.max(open, close) + Math.random() * volatility * basePrice;
-        const low = Math.min(open, close) - Math.random() * volatility * basePrice;
+function updateFee(){
+    const amount=Number(amountInput.value);
+    const valid=amount>0 && amount<=BALANCE && Number.isFinite(amount);
 
-        data.push({
-            x: time,
-            o: open,
-            h: high,
-            l: Math.max(0.01, low),
-            c: close
-        });
+    document.getElementById('summaryAmount').textContent=
+        '$'+(valid?amount:0).toFixed(2);
+    document.getElementById('summaryFee').textContent=
+        '$'+(valid?PROCESSING_FEE:0).toFixed(2);
+    document.getElementById('summaryNet').textContent=
+        '$'+(valid?Math.max(0,amount-PROCESSING_FEE):0).toFixed(2);
+}
+amountInput.addEventListener('input',updateFee);
 
-        lastClose = close;
+/* DEMONSTRATION REQUEST STATE: MEMORY ONLY */
+let request=null;
+let countdownInterval=null;
+
+document.getElementById('withdrawalForm').addEventListener('submit',function(e){
+    e.preventDefault();
+
+    const amount=Number(amountInput.value);
+    const feedback=document.getElementById('feedback');
+
+    if(!Number.isFinite(amount)||amount<=0||amount>BALANCE){
+        feedback.textContent='Enter a valid amount from $0.01 to $120.00.';
+        return;
     }
 
+    if(amount<PROCESSING_FEE){
+        feedback.textContent='The requested amount is below the proposed $20 fee. Review the fee arrangement before proceeding.';
+        return;
+    }
+
+    if(!document.getElementById('feeConsent').checked ||
+       !document.getElementById('timelineConsent').checked){
+        feedback.textContent='Review and acknowledge both disclosures before submitting.';
+        return;
+    }
+
+    request={
+        name:document.getElementById('clientName').value.trim(),
+        email:document.getElementById('clientEmail').value.trim(),
+        phone:document.getElementById('clientPhone').value.trim(),
+        reference:document.getElementById('reference').value.trim(),
+        amount,
+        currency:document.getElementById('payoutCurrency').value,
+        method:document.getElementById('payoutMethod').value,
+        receivedAt:new Date()
+    };
+
+    document.getElementById('overviewStatus').textContent='Enquiry recorded in this session';
+    document.getElementById('overviewAmount').textContent='$'+amount.toFixed(2);
+    document.getElementById('overviewDate').textContent='Awaiting verification';
+
+    document.getElementById('trackingStatus').textContent='Enquiry received — not processed';
+    document.getElementById('requestDate').textContent=request.receivedAt.toLocaleString();
+    document.getElementById('trackingAmount').textContent='$'+amount.toFixed(2);
+    document.getElementById('startDate').textContent='Awaiting authorized confirmation';
+    document.getElementById('releaseDate').textContent='Not confirmed';
+    document.getElementById('countdown').textContent='Not started';
+
+    ['days','hours','minutes','seconds'].forEach(id=>{
+        document.getElementById(id).textContent='—';
+    });
+    document.getElementById('progressBar').style.width='0%';
+
+    feedback.textContent='Demo enquiry recorded in this browser session only. No email was sent, no money was moved, and no 90-day hold has started.';
+    showPage('tracking');
+});
+
+/* Simulated chart — generated values, not live market data */
+const COIN_PRICE=10;
+const timeframes={
+    '1m':{points:30,interval:60000},
+    '4h':{points:24,interval:600000},
+    '1d':{points:24,interval:3600000},
+    '1M':{points:30,interval:86400000}
+};
+
+let chart=null;
+
+function makeData(tf){
+    const cfg=timeframes[tf]||timeframes['1m'];
+    let close=COIN_PRICE;
+    const now=Date.now();
+    const data=[];
+
+    for(let i=cfg.points-1;i>=0;i--){
+        const open=close;
+        close=Math.max(.01,open+(Math.random()-.5)*.3);
+        data.push({x:now-i*cfg.interval,y:close});
+    }
     return data;
 }
 
-const timeframes = {
-    '1m': { label: '1m', points: 60, intervalMinutes: 1, unit: 'minute' },
-    '4h': { label: '4h', points: 48, intervalMinutes: 5, unit: 'hour' },
-    '1d': { label: '1d', points: 24, intervalMinutes: 60, unit: 'hour' },
-    '1M': { label: '1M', points: 30, intervalMinutes: 60 * 24, unit: 'day' }
-};
+const canvas=document.getElementById('priceChart');
 
-const ctx = document.getElementById('priceChart').getContext('2d');
-let priceChart;
+function drawChart(tf){
+    if(!window.Chart||!canvas)return;
+    const data=makeData(tf);
 
-function createChart(data, timeframeKey) {
-    const timeConfig = timeframes[timeframeKey] || timeframes['1m'];
+    if(chart){
+        chart.data.datasets[0].data=data;
+        chart.update();
+        return;
+    }
 
-    return new Chart(ctx, {
-        type: 'candlestick',
-        data: {
-            datasets: [{
-                label: `LEE Coin ($${COIN_PRICE})`,
-                data,
-                color: {
-                    up: 'rgba(0,200,0,0.65)',
-                    down: 'rgba(255,80,80,0.65)',
-                    unchanged: 'rgba(200,200,200,0.65)'
-                },
-                borderColor: {
-                    up: 'rgba(0,200,0,0.9)',
-                    down: 'rgba(255,80,80,0.9)',
-                    unchanged: 'rgba(200,200,200,0.9)'
-                },
-                borderWidth: 1,
-                barPercentage: 0.6,
-                categoryPercentage: 0.75
-            }]
-        },
-        options: {
-            plugins: {
-                legend: { labels: { color: 'white' } },
-                tooltip: {
-                    callbacks: {
-                        label(ctx) {
-                            const p = ctx.parsed;
-                            return `O:${p.o.toFixed(2)} H:${p.h.toFixed(2)} L:${p.l.toFixed(2)} C:${p.c.toFixed(2)}`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    type: 'timeseries',
-                    time: {
-                        unit: timeConfig.unit,
-                        tooltipFormat: 'MMM d, HH:mm'
-                    },
-                    ticks: { color: 'white' },
-                    grid: { color: 'rgba(255,255,255,0.1)' }
-                },
-                y: {
-                    ticks: { color: 'white' },
-                    grid: { color: 'rgba(255,255,255,0.1)' },
-                    beginAtZero: false
-                }
+    chart=new Chart(canvas,{
+        type:'line',
+        data:{datasets:[{
+            label:'Simulated LEE Coin value',
+            data,
+            borderColor:'#ff7b00',
+            backgroundColor:'rgba(255,60,0,.12)',
+            pointRadius:0,
+            fill:true,
+            tension:.3
+        }]},
+        options:{
+            responsive:true,
+            maintainAspectRatio:true,
+            plugins:{legend:{labels:{color:'white'}}},
+            scales:{
+                x:{type:'linear',ticks:{color:'#aaa'},grid:{color:'#ffffff12'}},
+                y:{ticks:{color:'#aaa'},grid:{color:'#ffffff12'}}
             }
         }
     });
 }
 
-function updateChart(timeframeKey) {
-    const cfg = timeframes[timeframeKey] || timeframes['1m'];
-    const data = generateCandleData(COIN_PRICE, cfg.points, cfg.intervalMinutes, 0.02);
-
-    if (priceChart) {
-        priceChart.data.datasets[0].data = data;
-        priceChart.options.scales.x.time.unit = cfg.unit;
-        priceChart.update();
-        return;
-    }
-
-    priceChart = createChart(data, timeframeKey);
-}
-
-document.querySelectorAll('.timeframe-buttons button').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.timeframe-buttons button').forEach(b => b.classList.remove('active'));
+document.querySelectorAll('.tf').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+        document.querySelectorAll('.tf').forEach(b=>b.classList.remove('active'));
         btn.classList.add('active');
-        updateChart(btn.dataset.tf);
+        drawChart(btn.dataset.tf);
     });
 });
 
-updateChart('1m');
+drawChart('1m');
+updateFee();
 </script>
-
 </body>
-
 </html>
-
-
-
